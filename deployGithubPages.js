@@ -1,4 +1,4 @@
-import ghpages from 'gh-pages'
+const ghpages = require('gh-pages');
 
 const now = new Date()
 const isoString = now.toISOString()
