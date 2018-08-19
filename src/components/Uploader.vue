@@ -41,9 +41,9 @@
             const onComplete = async (id, name, object, xhr) => {
                 this.isOneUploadComplete = true
                 while (true) {
-                    const downloadS3Key = s3Key.replace('uploads', 'downloads')
+                    const downloadS3Key = s3Key.replace('uploads/', '')
                     try {
-                        const total_url = 'https://s3.ap-northeast-2.amazonaws.com/slidesharecharacteruploader/' + encodeURIComponent(downloadS3Key)
+                        const total_url = 'https://s3.ap-northeast-2.amazonaws.com/slidesharecharacteruploader/downloads/' + encodeURIComponent(downloadS3Key)
                         const res = await this.axios.get(total_url)
                         if (res.status === 200) {
                             this.isProcessFinished = true
