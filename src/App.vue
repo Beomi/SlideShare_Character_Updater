@@ -1,23 +1,24 @@
 <template>
-  <div id="app">
-    <h1>SlideShare Korean Font missing Fixer</h1>
-    <router-view/>
-  </div>
+    <div id="app">
+        <h1>SlideShare Korean Font missing Fixer</h1>
+        <h5><small>Note: Uploaded/Processed file is deleted after 1 day automatically.</small></h5>
+        <router-view/>
+    </div>
 </template>
 
 <script>
-export default {
-  name: 'App'
-}
+    export default {
+        name: 'App'
+    }
 </script>
 
 <style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+    #app {
+        font-family: 'Avenir', Helvetica, Arial, sans-serif;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        text-align: center;
+        color: #2c3e50;
+        margin-top: 60px;
+    }
 </style>
