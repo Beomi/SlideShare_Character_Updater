@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <img src="./assets/logo.png">
+    <h1>SlideShare Korean Font missing Fixer</h1>
     <router-view/>
   </div>
 </template>
