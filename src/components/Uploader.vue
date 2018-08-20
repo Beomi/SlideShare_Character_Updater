@@ -33,17 +33,20 @@
             Gallery
         },
         data() {
+            const randomKey = Math.random().toString(36).substring(7);
+            const now = new Date()
+
             let isOneUploadComplete = false
             let isProcessFinished = false
-            let s3Key = ''
-            let fileName = ''
 
-            const onComplete = async (id, name, object, xhr) => {
+            const onComplete = async (id, originalFileName, object, xhr) => {
                 this.isOneUploadComplete = true
                 while (true) {
-                    const downloadS3Key = s3Key.replace('uploads/', '')
+                    const fileName = `${randomKey}_${originalFileName.replace('.pdf', '').replace(/\W/gi, "_")}.pdf`
+                    const s3Key = `${now.toISOString().split('T')[0]}/${fileName}`
                     try {
-                        const total_url = 'https://s3.ap-northeast-2.amazonaws.com/slidesharecharacteruploader/downloads/' + encodeURIComponent(downloadS3Key)
+                        const total_url = 'https://s3.ap-northeast-2.amazonaws.com/slidesharecharacteruploader/downloads/'
+                            + encodeURIComponent(s3Key).replace('%2F', '/')
                         const res = await this.axios.get(total_url)
                         if (res.status === 200) {
                             this.isProcessFinished = true
@@ -51,9 +54,14 @@
                             return;
                         }
                     } catch (e) {
-                        await sleep(1000)
+                        await sleep(2000)
                     }
                 }
+            }
+
+            const onValidate = (fileOrBlobData) => {
+                const fileName = fileOrBlobData.name
+                return !!fileName.endsWith('.pdf');
             }
 
             const uploader = new FineUploaderS3({
@@ -69,21 +77,20 @@
                     objectProperties: {
                         region: 'ap-northeast-2',
                         key(fileId) {
-                            const now = new Date()
-                            fileName = this.getName(fileId).split(' ').join('_')
-                            s3Key = `uploads/${now.toISOString().split('T')[0]}/${fileName}`
+                            const originalFileName = this.getName(fileId)
+                            const fileName = `${randomKey}_${originalFileName.replace('.pdf', '').replace(/\W/gi, "_")}.pdf`
+                            const s3Key = `uploads/${now.toISOString().split('T')[0]}/${fileName}`
                             return s3Key
                         }
                     },
                     callbacks: {
-                        onComplete
+                        onComplete,
+                        onValidate
                     }
-                }
+                },
             })
             return {
                 uploader,
-                s3Key,
-                fileName,
                 isOneUploadComplete,
                 isProcessFinished,
                 pdfUrl: '',
